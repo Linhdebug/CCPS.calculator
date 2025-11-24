@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Codificador César por Líneas (Aleatorio)</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f0f0f0;
+    }
+    textarea {
+        width: 100%;
+        height: 120px;
+        resize: vertical;
+        margin-bottom: 20px;
+        padding: 10px;
+        font-size: 16px;
+    }
+    select, button {
+        padding: 10px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    #result {
+        margin-top: 20px;
+        padding: 15px;
+        background: white;
+        border-radius: 5px;
+        white-space: pre;
+        min-height: 40px;
+        font-family: monospace;
+    }
+</style>
+</head>
+<body>
+
+<h1>Códificar mensaje en líneas + César (con relleno aleatorio)</h1>
+
+<textarea id="inputText" placeholder="Escribe aquí el mensaje a codificar..."></textarea>
+
+<br>
+
+<label>Selecciona número (1–26): </label>
+<select id="shift">
+    <script>
+        for(let i=1;i<=26;i++){
+            document.write(`<option value="${i}">${i}</option>`);
+        }
+    </script>
+</select>
+
+<h3>Result</h3>
+
+<button onclick="encode()">Codificar</button>
+
+<div id="result"></div>
+
+<script>
+// Cifrado César
+function caesarShift(letter, shift) {
+    const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    const alphabetUpper = alphabet.toUpperCase();
+
+    if (alphabet.includes(letter)) {
+        return alphabet[(alphabet.indexOf(letter) + shift) % 26];
+    }
+    if (alphabetUpper.includes(letter)) {
+        return alphabetUpper[(alphabetUpper.indexOf(letter) + shift) % 26];
+    }
+    return letter;
+}
+
+// Genera una letra aleatoria A-Z
+function randomLetter() {
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    return alphabet[Math.floor(Math.random() * 26)];
+}
+
+function encode() {
+    const text = document.getElementById("inputText").value;
+    const shift = parseInt(document.getElementById("shift").value);
+    let resultLines = [];
+
+    for (let i = 0; i < text.length; i++) {
+        const encrypted = caesarShift(text[i], shift);
+
+        let line = "";
+
+        // Rellenamos con letras aleatorias menos en la posición importante
+        for (let j = 0; j < i; j++) {
+            line += randomLetter();
+        }
+
+        // La letra cifrada se coloca en su posición correcta
+        line += encrypted;
+
+        // Y completamos con letras aleatorias al final
+        for (let j = i + 1; j < text.length; j++) {
+            line += randomLetter();
+        }
+
+        resultLines.push(line);
+    }
+
+    document.getElementById("result").textContent = resultLines.join("\n");
+}
+</script>
+
+</body>
+</html>
