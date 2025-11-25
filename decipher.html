@@ -57,16 +57,16 @@
 <div id="result"></div>
 
 <script>
-// Cifrado César
+// Cifrado César (retroceder en vez de avanzar)
 function caesarShift(letter, shift) {
     const alphabet = "abcdefghijklmnopqrstuvwxyz";
     const alphabetUpper = alphabet.toUpperCase();
 
     if (alphabet.includes(letter)) {
-        return alphabet[(alphabet.indexOf(letter) + shift) % 26];
+        return alphabet[(alphabet.indexOf(letter) - shift + 26) % 26]; // Restar el desplazamiento para retroceder
     }
     if (alphabetUpper.includes(letter)) {
-        return alphabetUpper[(alphabetUpper.indexOf(letter) + shift) % 26];
+        return alphabetUpper[(alphabetUpper.indexOf(letter) - shift + 26) % 26]; // Lo mismo para las mayúsculas
     }
     return letter;
 }
